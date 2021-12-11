@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - "echo Logging in to ECR registry"
+      - $(aws ecr get-login --region us-east-1 --no-include-email)
+  build:
+    commands:
+      - "echo Build started on `date`"
+      - "echo Building docker image"
+      - "docker build -t demo ."
+      - "docker tag demo:latest 995870504272.dkr.ecr.us-east-1.amazonaws.com/demo:latest"
+  post_build:
+    commands:
+      - "echo Build is complete on `date`"
+      - "echo pushing the docker image"
+      - "docker push 995870504272.dkr.ecr.us-east-1.amazonaws.com/demo:latest"
